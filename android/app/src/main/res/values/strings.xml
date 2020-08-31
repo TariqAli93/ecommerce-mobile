@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Codel Ecommerce App</string>
+    <string name="title_activity_main">Codel Ecommerce App</string>
+    <string name="package_name">com.ecommerce.codel</string>
+    <string name="custom_url_scheme">com.ecommerce.codel</string>
+</resources>
