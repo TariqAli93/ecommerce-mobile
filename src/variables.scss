@@ -1,0 +1,26 @@
+$primary: #000000;
+$secondary: #B89E97;
+$accent: #82B1FF;
+$error: #FF5252;
+$info: #2196F3;
+$success: #4CAF50;
+$warning: #FFC107;
+$transition-time: 500ms;
+$transition-fucn: cubic-bezier(0.075, 0.82, 0.165, 1);
+$transition: all $transition-time $transition-fucn;
+
+.primary {
+    background: $primary;
+}
+
+.primary--text {
+    color: $primary;
+}
+
+.secondary {
+    background: $secondary;
+}
+
+.secondary--text {
+    color: $secondary;
+}

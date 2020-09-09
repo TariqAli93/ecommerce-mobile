@@ -15,13 +15,14 @@ export default {
             default: false
         }
     },
-    data() { return {} }
+    data() {
+        return {}
+    }
 }
 </script>
 
 <style lang="scss">
-$secondary: #EB9486;
-$primary:#272838;
+@import '../variables.scss';
 
 .loader,
 .loader:before,

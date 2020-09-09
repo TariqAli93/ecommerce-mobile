@@ -9,9 +9,15 @@ let favorite = localStorage.getItem('favorite');
 export default new Vuex.Store({
   state: {
     cart: cart ? JSON.parse(cart) : [],
-    favorite: favorite ? JSON.parse(favorite) : []
+    favorite: favorite ? JSON.parse(favorite) : [],
+    token: localStorage.token || null,
+    product_dialog: false
   },
   mutations: {
+    SET_TOKEN(state, token) {
+      state.token = token
+    },
+
     SAVE_PRODUCT(state, payload) {
       state.cart.push(payload)
       localStorage.setItem('cart', JSON.stringify(state.cart));
@@ -48,6 +54,10 @@ export default new Vuex.Store({
 
       localStorage.setItem('cart', JSON.stringify(state.cart));
     },
+
+    TOGGLE_PRODUCT_DIALOG(state) {
+      return state.product_dialog = !state.product_dialog
+    }
   },
   getters: {
     product_count(state) {
@@ -63,6 +73,18 @@ export default new Vuex.Store({
 
       return total
     },
+
+    getToken(state) {
+      return state.token
+    },
+
+    isAuthenticated(state) {
+      return state.token !== null
+    },
+
+    products(state) {
+      return state.cart
+    }
   },
   actions: {
     save_product(context, {product, qty}) {
@@ -113,6 +135,10 @@ export default new Vuex.Store({
 
     decrease_qty(context, index) {
       context.commit('DECREASE_QTY', index);
+    },
+
+    toggleProductDialog({commit}) {
+      commit('TOGGLE_PRODUCT_DIALOG');
     }
   },
   modules: {

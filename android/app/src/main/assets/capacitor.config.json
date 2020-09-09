@@ -1,13 +1,1 @@
-{
-  "appId": "com.ecommerce.codel",
-  "appName": "Codel Ecommerce App",
-  "bundledWebRuntime": false,
-  "npmClient": "npm",
-  "webDir": "dist",
-  "plugins": {
-    "SplashScreen": {
-      "launchShowDuration": 0
-    }
-  },
-  "cordova": {}
-}
+{"appId":"com.codel.app","appName":"Codel App","bundledWebRuntime":false,"webDir":"dist","server":{"url":"http://192.168.0.104:8080"}}
