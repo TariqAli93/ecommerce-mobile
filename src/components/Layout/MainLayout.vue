@@ -2,7 +2,12 @@
 <div :class="`page page--${className} page--${platform}`">
     <div class="page--toolbar" v-show="toolbar">
         <div class="page--toolbar--inner">
+            <button class="search-button" v-show="search" @click="$store.commit('TOGGLE_SEARCH')">
+                <i class="im im-magnifier"></i>
+            </button>
+
             <span>{{ title }}</span>
+            
             <button class="backbutton" v-show="backbutton" @click="$router.go(-1)">
                 <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M2.117 12l7.527 6.235-.644.765-9-7.521 9-7.479.645.764-7.529 6.236h21.884v1h-21.883z"/></svg>
             </button>
@@ -80,18 +85,25 @@ export default {
         backbutton: {
             type: Boolean,
             default: false
-        }
+        },
+        
+        search: {
+            type: Boolean,
+            default: true
+        },
     },
 
     data() {
         return {
-            platform: ''
+            platform: '',
+            showSearchBox: false,
+            search_input: '',
         }
     },
 
     mounted() {
         this.platform = Capacitor.platform
-    }
+    },
 }
 </script>
 
@@ -136,6 +148,22 @@ export default {
 
                 svg {
                     fill: $secondary;
+                }
+            }
+
+            .search-button {
+                position: absolute;
+                top: 50%;
+                right: 0;
+                border: none;
+                outline: none;
+                background: transparent;
+                line-height: 0;
+                color: $secondary;
+                transform: translateY(-50%);
+
+                i {
+                    font-size: 20px;
                 }
             }
         }

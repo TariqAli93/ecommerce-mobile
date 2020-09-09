@@ -6,7 +6,7 @@
         </div>
 
         <div class="search">
-            <Autocomplete :items="products" />
+            <Autocomplete :items="products" :border="true" />
         </div>
     </div>
 
@@ -172,8 +172,8 @@ export default {
 
         showMoreProduct(page, id) {
             this.$router.push({path: `/${page}/${id}`})
-        }
-    }
+        },
+    },
 }
 </script>
 
@@ -385,7 +385,7 @@ export default {
                         left: 0;
                         right: 0;
                         margin: auto;
-                        background: lighten($primary, 71%);
+                        background: lighten($primary, 30%);
                         bottom: -10px;
                         border-radius: 5px;
                     }
@@ -393,7 +393,7 @@ export default {
                     &::before {
                         width: 80%;
                         bottom: -20px;
-                        background: lighten($primary, 74%);
+                        background: lighten($primary, 40%);
                     }
 
                     &--btn {

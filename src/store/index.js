@@ -11,7 +11,8 @@ export default new Vuex.Store({
     cart: cart ? JSON.parse(cart) : [],
     favorite: favorite ? JSON.parse(favorite) : [],
     token: localStorage.token || null,
-    product_dialog: false
+    product_dialog: false,
+    showSearchBox: false
   },
   mutations: {
     SET_TOKEN(state, token) {
@@ -57,6 +58,10 @@ export default new Vuex.Store({
 
     TOGGLE_PRODUCT_DIALOG(state) {
       return state.product_dialog = !state.product_dialog
+    },
+
+    TOGGLE_SEARCH(state) {
+      return state.showSearchBox = !state.showSearchBox
     }
   },
   getters: {

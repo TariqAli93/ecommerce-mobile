@@ -11,6 +11,11 @@ export default {
             required: false,
             default: false,
         },
+        border: {
+            type: Boolean,
+            required: false,
+            default: false
+        }
     },
 
     data() {
@@ -91,7 +96,7 @@ export default {
 <template>
 <div class="autocomplete">
     <div class="autocomplete-inner">
-        <input type="text" placeholder="هل تبحث عن منتج" @input="onChange" v-model="search" @keydown.down="onArrowDown" @keydown.up="onArrowUp" @keydown.enter="onEnter" />
+        <input type="text" placeholder="هل تبحث عن منتج" :class="{'has--border': border}" @input="onChange" v-model="search" @keydown.down="onArrowDown" @keydown.up="onArrowUp" @keydown.enter="onEnter" />
         <ul id="autocomplete-results" v-show="isOpen" class="autocomplete-results">
             <li class="loading" v-if="isLoading">
                 Loading results...
@@ -124,7 +129,7 @@ export default {
         height: fit-content;
         background: darken($primary, 10%);
         border-radius: 5px;
-        box-shadow: 0 2px 10px 0 rgba(black, .10);
+        // box-shadow: 0 2px 10px 0 rgba(black, .10);
         max-height: 300px;
         overflow-y: scroll;
 
@@ -138,8 +143,13 @@ export default {
             position: sticky;
             top: 0;
             z-index: 1;
-            background: darken($primary, 5%);
+            background: lighten($primary, 10%);
             color: $secondary;
+            border-radius: 5px;
+
+            &.has--border {
+                border: 1px solid rgba($secondary, .10)
+            }
 
             &:focus,
             &:hover,
@@ -152,6 +162,11 @@ export default {
             list-style: none;
             margin: 0;
             padding: 0;
+
+            &.show {
+                visibility: visible;
+                opacity: 1;
+            }
 
             li {
                 display: block;

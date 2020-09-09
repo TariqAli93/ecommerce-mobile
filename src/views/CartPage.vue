@@ -1,5 +1,5 @@
 <template>
-<MainLayout :toolbar="true" :backbutton="true" :navigation="true" title="سلة المشتريات" className="cart">
+<MainLayout :toolbar="true" :backbutton="true" :navigation="true" title="سلة المشتريات" className="cart" :search="false">
     <div class="cart" v-if="products.length > 0">
         <div class="cart--head">
             <span>المجموع</span>
@@ -10,7 +10,7 @@
             <div class="cart--list--item" v-for="(product, index) in products" :key="product.idProduct">
                 <div class="cart--list--item--inner" v-hammer:pan.horizontal="(event) => onSwipe(event, index)">
                     <div class="cart--list--item--inner--img">
-                        <img src="../assets/images/product-1.jpg" />
+                        <img :src="server + '/attachment/' + product.product.image" />
                     </div>
 
                     <div class="cart--list--item--inner--content">
@@ -22,13 +22,13 @@
                         <span class="nmbr">{{ product.qty }}</span>
                         <div class="btns">
                             <span class="btn" @click="$store.dispatch('increase_qty', index)"><i class="im im-arrow-right"></i></span>
-                            <span class="btn"  @click="$store.dispatch('decrease_qty', index)"><i class="im im-arrow-left"></i></span>
+                            <span class="btn" @click="$store.dispatch('decrease_qty', index)"><i class="im im-arrow-left"></i></span>
                         </div>
                     </div>
                 </div>
 
                 <div class="cart--list--item--delete">
-                    <button @click="$store.dispatch('remove_from_cart', index)">
+                    <button @click="removeItem(index)">
                         <i class="im im-trash-can"></i>
                     </button>
                 </div>
@@ -57,10 +57,18 @@
 </template>
 
 <script>
+import server from '../plugins/server'
+import {
+    Plugins
+} from '@capacitor/core'
+const {
+    Modals
+} = Plugins;
+
 export default {
     data() {
         return {
-
+            server: server
         }
     },
     mounted() {
@@ -74,6 +82,41 @@ export default {
     methods: {
         log(e) {
             console.log(e)
+        },
+
+        removeItem(product) {
+            let confirm = Modals.confirm({
+                title: 'حذف المنتج',
+                message: 'هل تريد حف المنتج ؟'
+            }).then(data => {
+                if (data.value === true) {
+                    this.$store.dispatch('remove_from_cart', product);
+                    this.$toast.open({
+                        type: 'success',
+                        message: 'تم حذف المنتج',
+                        position: 'bottom'
+                    });
+                } else {
+                    this.$toast.open({
+                        type: 'warning',
+                        message: 'لم يتم حذف المنتج',
+                        position: 'bottom'
+                    });
+                }
+
+                let inner = document.querySelectorAll('.cart--list--item--inner');
+                let remove = document.querySelectorAll('.cart--list--item--delete');
+
+                inner.forEach(item => {
+                    item.style.transform = 'translateX(0)';
+                });
+
+                remove.forEach(item => {
+                    item.style.opacity = 0;
+                });
+            }).catch(err => {
+                console.error(err)
+            })
         },
 
         onSwipe(e, i) {
@@ -155,6 +198,7 @@ $trans: cubic-bezier(0.075, 0.82, 0.165, 1) 300ms all;
         }
     }
 }
+
 .cart {
     display: block;
     padding: 10px;
