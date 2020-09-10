@@ -8,6 +8,7 @@ import ProductsByStatus from '../views/ProductsByStatus'
 import AllProducts from '../views/AllProducts'
 import ProductById from '../views/ProductById'
 import ProductsByCategory from '../views/ProductsByCategory.vue'
+import Categories from '../views/Categories'
 
 import store from '../store'
 
@@ -68,6 +69,11 @@ Vue.use(VueRouter)
     path: '/product/:id',
     name: 'ProductById',
     component: ProductById
+  },
+  {
+    path: '/categories',
+    name: 'Categories',
+    component: Categories
   },
 
   {path: '*', component: NotFound}
