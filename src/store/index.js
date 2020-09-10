@@ -33,6 +33,11 @@ export default new Vuex.Store({
       state.cart.splice(index, 1);
       localStorage.setItem('cart', JSON.stringify(state.cart));
     },
+    
+    REMOVE_PRODUCTS_FROM_FAVORITE(state, index) {
+      state.favorite.splice(index, 1);
+      localStorage.setItem('favorite', JSON.stringify(state.favorite));
+    },
 
     INCREASE_QTY(state, index) {
       let quantity = state.cart[index].product.quantity;
@@ -89,6 +94,10 @@ export default new Vuex.Store({
 
     products(state) {
       return state.cart
+    },
+    
+    favorite_products(state) {
+      return state.favorite
     }
   },
   actions: {
@@ -120,6 +129,18 @@ export default new Vuex.Store({
           reject(new Error('Item In Cart'));
         }
       });
+    },
+
+    remove_from_favorite(context, index) {
+      return new Promise((resolve, reject) => {
+        let check = true;
+        if(check) {
+          context.commit('REMOVE_PRODUCTS_FROM_FAVORITE', index);
+          resolve(index)
+        } else {
+          reject(new Error('Cant Remove'));
+        }
+      })
     },
 
     remove_from_cart(context, index) {

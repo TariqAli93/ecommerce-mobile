@@ -1,8 +1,8 @@
 <template>
-<MainLayout :toolbar="false" :backbutton="true" :navigation="false" title="404" className="404">
+<MainLayout :toolbar="true" :backbutton="true" :navigation="true" title="404" className="404" :search="false">
     <div class="empty">
         <img src="../assets/images/empty-bag-bg.png" />
-        <span>لا يتوفر هذا التصنيف على اي منتج</span>
+        <span>لم يتم العثور على هذه الصفحة</span>
         <router-link tag="button" to="/">
             <span>العودة الى الرئيسية</span>
             <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd">
@@ -23,7 +23,7 @@ export default {
 @import '../variables.scss';
 
 .page--404 {
-  height: 100vh;
+  height: calc(100vh - 100px);
 
   .page--content {
     height: 100%;

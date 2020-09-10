@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import MainPage from '../views/MainPage'
 import CartPage from '../views/CartPage'
+import FavoritePage from '../views/FavoritePage'
 import NotFound from '../views/NotFound'
 import ProductsByStatus from '../views/ProductsByStatus'
 import AllProducts from '../views/AllProducts'
@@ -42,6 +43,11 @@ Vue.use(VueRouter)
     path: '/cart',
     name: 'CartPage',
     component: CartPage
+  },
+  {
+    path: '/favorite',
+    name: 'FavoritePage',
+    component: FavoritePage
   },
   {
     path: '/productsStatus/:id',
