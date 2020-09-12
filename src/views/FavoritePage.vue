@@ -1,5 +1,5 @@
 <template>
-<MainLayout :toolbar="true" :backbutton="true" :navigation="true" title="المفضلة" className="cart" :search="false">
+<MainLayout :toolbar="true" :backbutton="true" :navigation="true" title="المفضلة" className="favorite" :search="false">
     <div class="cart" v-if="products.length > 0">
         <div class="cart--list">
             <div class="cart--list--item" v-for="(product, index) in products" :key="product.idProduct">
@@ -17,6 +17,9 @@
                 <div class="cart--list--item--delete">
                     <button @click="removeItem(index)">
                         <i class="im im-trash-can"></i>
+                    </button>
+                    <button @click="addItem(product, index)" class="add-button">
+                        <i class="im im-shopping-cart"></i>
                     </button>
                 </div>
             </div>
@@ -99,6 +102,25 @@ export default {
             })
         },
 
+        addItem(product, index) {
+            Modals.confirm({
+                title: 'حفظ المنتج في السلة',
+                message: 'سوف يتم نقل المنتج الى السلة هل انت موافق ؟'
+            }).then(data => {
+                if(data.value === true) {
+                    this.$store.dispatch('save_product', {product: product, qty: 1})
+                    .then(result => {
+                        this.removeItem(index);
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+                } else {
+                    console.log(data.value)
+                }
+            })
+        },
+
         onSwipe(e, i) {
             let inner = document.querySelectorAll('.cart--list--item--inner');
             let remove = document.querySelectorAll('.cart--list--item--delete');
@@ -115,7 +137,7 @@ export default {
                 inner[i].style.transform = 'translateX(0)'
                 remove[i].style.opacity = 0;
             } else if (e.direction === 4) {
-                inner[i].style.transform = 'translateX(100px)'
+                inner[i].style.transform = 'translateX(200px)'
                 remove[i].style.opacity = 1;
             }
 
@@ -129,7 +151,7 @@ export default {
 
 $trans: cubic-bezier(0.075, 0.82, 0.165, 1) 300ms all;
 
-.page--cart {
+.page--favorite {
     height: calc(100vh - 90px);
 
     .page--content {
@@ -282,7 +304,7 @@ $trans: cubic-bezier(0.075, 0.82, 0.165, 1) 300ms all;
 
             &--delete {
                 position: absolute;
-                width: 100px;
+                width: 200px;
                 height: 100%;
                 left: 0;
                 top: 0;
@@ -303,6 +325,14 @@ $trans: cubic-bezier(0.075, 0.82, 0.165, 1) 300ms all;
 
                     i {
                         color: $primary;
+                    }
+
+                    &.add-button {
+                        background: $primary;
+                        
+                        i {
+                            color: $secondary;
+                        }
                     }
                 }
             }

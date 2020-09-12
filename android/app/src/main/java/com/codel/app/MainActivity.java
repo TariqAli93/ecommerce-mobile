@@ -1,4 +1,4 @@
-package com.ecommerce.codel;
+package com.codel.app;
 
 import android.os.Bundle;
 

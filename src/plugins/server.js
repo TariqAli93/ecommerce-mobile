@@ -1,2 +1,2 @@
-const server = 'http://192.168.0.104:5000';
+const server = 'http://192.168.1.10:5000';
 module.exports = server;

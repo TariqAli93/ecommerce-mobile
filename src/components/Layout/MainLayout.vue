@@ -322,7 +322,7 @@ export default {
 
     &--ios {
         .page--toolbar {
-            padding: 10px 10px;
+            padding: 45px 10px 10px 10px;
 
             h1 {
                 padding-top: 5px;

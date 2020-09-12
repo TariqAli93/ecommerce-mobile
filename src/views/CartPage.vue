@@ -302,7 +302,7 @@ $trans: cubic-bezier(0.075, 0.82, 0.165, 1) 300ms all;
 
             &--delete {
                 position: absolute;
-                width: 100px;
+                width: 100px !important;
                 height: 100%;
                 left: 0;
                 top: 0;

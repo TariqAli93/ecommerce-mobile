@@ -1,21 +1,30 @@
 <template>
 <main>
-    <div class="loading--screen" v-if="isLoading">
-        <Loading />
+    <ServerStatus v-if="!isConnected"/>
+
+    <div class="MainActivity" v-else>
+        <div class="loading--screen" v-if="isLoading">
+            <Loading />
+        </div>
+        <router-view v-else />
     </div>
-    <router-view />
 </main>
 </template>
 
 <script>
 import Loading from '@/components/Loading'
+import ServerStatus from '@/components/ServerStatus'
+import { Plugins } from '@capacitor/core'
+const { Network } = Plugins
 export default {
     components: {
-        Loading
+        Loading,
+        ServerStatus
     },
     data() {
         return {
-            isLoading: true
+            isLoading: true,
+            isConnected: false
         }
     },
 
@@ -23,6 +32,22 @@ export default {
         setTimeout(() => {
             this.isLoading = false
         }, 2000);
+
+        Network.getStatus().then(data => {
+            if(data.connected === true) {
+                this.isConnected = true
+            } else {
+                this.isConnected = false
+            }
+        });
+
+        Network.addListener('networkStatusChange', (status) => {
+            if(status.connected === true) {
+                this.isConnected = true
+            } else {
+                this.isConnected = false
+            }
+        })
     },
 
     watch: {
@@ -34,6 +59,8 @@ export default {
             }, 2000);
         }
     },
+
+    computed: {}
 };
 </script>
 

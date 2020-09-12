@@ -53,10 +53,16 @@ export default {
             isOpen: false
         }
     },
+
+    mounted() {
+        
+    },
+
     methods: {
         onSwipe(e) {
             this.$store.dispatch('toggleProductDialog');
         },
+
         likeProduct(product) {
             this.$store.dispatch('favorite_product', product)
                 .then(data => {
@@ -258,6 +264,12 @@ export default {
                 }
             }
         }
+    }
+}
+
+.page--ios {
+    .product--dialog--container--cover--btn {
+        top: 45px;
     }
 }
 </style>
