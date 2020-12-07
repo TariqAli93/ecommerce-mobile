@@ -12,7 +12,9 @@ export default new Vuex.Store({
     favorite: favorite ? JSON.parse(favorite) : [],
     token: localStorage.token || null,
     product_dialog: false,
-    showSearchBox: false
+    showSearchBox: false,
+    product_images: [],
+    product_info: {}
   },
   mutations: {
     SET_TOKEN(state, token) {
@@ -67,6 +69,10 @@ export default new Vuex.Store({
 
     TOGGLE_SEARCH(state) {
       return state.showSearchBox = !state.showSearchBox
+    },
+
+    SET_PRODUCT_INFO(state, product) {
+      return state.product_info = product
     }
   },
   getters: {
@@ -122,9 +128,17 @@ export default new Vuex.Store({
           return item.idProduct === product.idProduct
         });
 
+        let inCart = this.state.cart.find(item => {
+          return item.product.idProduct === product.idProduct
+        });
+
         if(!inFavorite) {
-          resolve(product);
-          context.commit('FAVORITE_PRODUCT', product);
+          if(!inCart) {
+            resolve(product);
+            context.commit('FAVORITE_PRODUCT', product);
+          } else {
+            reject(new Error('Item In Cart'));
+          }
         } else {
           reject(new Error('Item In Cart'));
         }
@@ -165,6 +179,10 @@ export default new Vuex.Store({
 
     toggleProductDialog({commit}) {
       commit('TOGGLE_PRODUCT_DIALOG');
+    },
+
+    setProductInfo({commit}, product) {
+      commit('SET_PRODUCT_INFO', product);
     }
   },
   modules: {

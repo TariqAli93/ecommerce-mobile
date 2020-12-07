@@ -24,8 +24,6 @@
             </div>
         </div>
     </div>
-
-    <ProductDialog :product_info="product_info" />
 </MainLayout>
 </template>
 
@@ -55,8 +53,10 @@ export default {
 
     methods: {
         openCard(product) {
-            this.$store.state.product_dialog = true;
-            this.product_info = product;
+            this.$router.push({
+                path: `/product/${product.idProduct}`,
+                params: {id: product.idProduct}
+            })
         },
     },
 

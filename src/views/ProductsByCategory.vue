@@ -35,8 +35,6 @@
             </svg>
         </router-link>
     </div>
-
-    <ProductDialog :product_info="product_info" />
 </MainLayout>
 </template>
 
@@ -67,8 +65,10 @@ export default {
 
     methods: {
         openCard(product) {
-            this.$store.dispatch('toggleProductDialog');
-            this.product_info = product;
+            this.$router.push({
+                path: `/product/${product.idProduct}`,
+                params: {id: product.idProduct}
+            })
         },
     },
 

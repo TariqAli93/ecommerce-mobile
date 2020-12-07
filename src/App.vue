@@ -1,7 +1,6 @@
 <template>
 <main>
     <ServerStatus v-if="!isConnected"/>
-
     <div class="MainActivity" v-else>
         <div class="loading--screen" v-if="isLoading">
             <Loading />

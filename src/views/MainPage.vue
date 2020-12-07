@@ -2,7 +2,8 @@
 <MainLayout :toolbar="false" :backbutton="false" :navigation="true" title="Page" className="home">
     <div class="header">
         <div class="title">
-            <h1 class="secondary--text">المتجر العراقي</h1>
+            <!-- <h1 class="secondary--text">المتجر العراقي</h1> -->
+            <img src="@/assets/images/logo_store.png">
         </div>
 
         <div class="search">
@@ -107,8 +108,6 @@
             </div>
         </div>
     </div>
-
-    <ProductDialog :open="openProductDialog" :product_info="product_info" />
 </MainLayout>
 </template>
 
@@ -122,7 +121,6 @@ export default {
 
     data() {
         return {
-            openProductDialog: false,
             products: [],
             new_products: [],
             best_products: [],
@@ -152,26 +150,35 @@ export default {
             });
 
         this.axios.get('categories')
-        .then(data => {
-            this.categories = data.data;
-        })
-        .catch(err => {
-            console.error(err)
-        })
+            .then(data => {
+                this.categories = data.data;
+            })
+            .catch(err => {
+                console.error(err)
+            });
     },
 
     methods: {
         openCard(product) {
-            this.$store.state.product_dialog = true;
-            this.product_info = product;
+            this.$router.push({
+                path: `/product/${product.idProduct}`,
+                params: {id: product.idProduct}
+            })
         },
 
         goToProductCategory(id, name) {
-            this.$router.push({path: '/productsCategory', params: {id: id }});
+            this.$router.push({
+                path: '/productsCategory',
+                params: {
+                    id: id
+                }
+            });
         },
 
         showMoreProduct(page, id) {
-            this.$router.push({path: `/${page}/${id}`})
+            this.$router.push({
+                path: `/${page}/${id}`
+            })
         },
     },
 }
@@ -265,7 +272,7 @@ export default {
                 min-height: 30px;
                 padding: 20px 30px;
                 background: $primary;
-                border-radius: 300px;
+                border-radius: 5px;
                 outline: none;
                 border: none;
                 box-shadow: 0 2px 4px 0 rgba(black, .10);

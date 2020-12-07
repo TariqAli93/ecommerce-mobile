@@ -6,9 +6,11 @@ import FavoritePage from '../views/FavoritePage'
 import NotFound from '../views/NotFound'
 import ProductsByStatus from '../views/ProductsByStatus'
 import AllProducts from '../views/AllProducts'
-import ProductById from '../views/ProductById'
-import ProductsByCategory from '../views/ProductsByCategory.vue'
+import Product from '../views/Product'
+import ProductsByCategory from '../views/ProductsByCategory'
 import Categories from '../views/Categories'
+import Profile from '../views/Profile'
+import LoginPage from '../views/LoginPage'
 
 import store from '../store'
 
@@ -17,7 +19,7 @@ Vue.use(VueRouter)
   function GuardTheRoute(to, from, next) {
     if(store.state.token === null) {
       next({
-        path: '/auth'
+        path: '/login'
       })
     } else {
       next()
@@ -38,7 +40,8 @@ Vue.use(VueRouter)
   {
     path: '/',
     name: 'MainPage',
-    component: MainPage
+    component: MainPage,
+    beforeEnter: GuardTheRoute
   },
   {
     path: '/cart',
@@ -67,13 +70,23 @@ Vue.use(VueRouter)
   },
   {
     path: '/product/:id',
-    name: 'ProductById',
-    component: ProductById
+    name: 'Product',
+    component: Product
   },
   {
     path: '/categories',
     name: 'Categories',
     component: Categories
+  },
+  {
+    path: '/profile/:id',
+    name: 'Profile',
+    component: Profile
+  },
+  {
+    path: '/login',
+    name: 'LoginPage',
+    component: LoginPage
   },
 
   {path: '*', component: NotFound}

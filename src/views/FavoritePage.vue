@@ -1,26 +1,22 @@
 <template>
 <MainLayout :toolbar="true" :backbutton="true" :navigation="true" title="المفضلة" className="favorite" :search="false">
-    <div class="cart" v-if="products.length > 0">
-        <div class="cart--list">
-            <div class="cart--list--item" v-for="(product, index) in products" :key="product.idProduct">
-                <div class="cart--list--item--inner" v-hammer:pan.horizontal="(event) => onSwipe(event, index)">
-                    <div class="cart--list--item--inner--img">
+    <div class="favorite" v-if="products.length > 0">
+        <div class="favorite--list">
+            <div class="favorite--list--item" v-for="(product, index) in products" :key="product.idProduct">
+                <div class="favorite--list--item--inner" v-hammer:pan.horizontal="(event) => onSwipe(event, index)">
+                    <div class="favorite--list--item--inner--img">
                         <img :src="server + '/attachment/' + product.image" />
                     </div>
 
-                    <div class="cart--list--item--inner--content">
-                        <span class="cart--list--item--inner--content--name">{{ product.productName }}</span>
-                        <span class="cart--list--item--inner--content--price">${{ product.price }}</span>
+                    <div class="favorite--list--item--inner--content">
+                        <span class="favorite--list--item--inner--content--name">{{ product.productName }}</span>
+                        <span class="favorite--list--item--inner--content--price">${{ product.price }}</span>
                     </div>
                 </div>
 
-                <div class="cart--list--item--delete">
-                    <button @click="removeItem(index)">
-                        <i class="im im-trash-can"></i>
-                    </button>
-                    <button @click="addItem(product, index)" class="add-button">
-                        <i class="im im-shopping-cart"></i>
-                    </button>
+                <div class="favorite--list--item--delete">
+                    <button @click="removeItem(index)"><i class="im im-trash-can"></i></button>
+                    <button><i class="im im-shopping-cart" @click="save_product(product, index)"></i></button>
                 </div>
             </div>
         </div>
@@ -28,7 +24,7 @@
 
     <div class="empty" v-else>
         <img src="../assets/images/empty-bag-bg.png" />
-        <span>لا يتوفر اي منتج في المفضلة</span>
+        <span>لا يتوفر اي منتج في السلة</span>
         <router-link tag="button" to="/">
             <span>العودة الى الرئيسية</span>
             <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd">
@@ -54,76 +50,19 @@ export default {
             server: server
         }
     },
-    mounted() {
 
-    },
+    mounted() {},
+
     computed: {
         products() {
             return this.$store.getters.favorite_products
         }
     },
+
     methods: {
-        log(e) {
-            console.log(e)
-        },
-
-        removeItem(product) {
-            let confirm = Modals.confirm({
-                title: 'حذف المنتج',
-                message: 'هل تريد حف المنتج ؟'
-            }).then(data => {
-                if (data.value === true) {
-                    this.$store.dispatch('remove_from_favorite', product);
-                    this.$toast.open({
-                        type: 'success',
-                        message: 'تم حذف المنتج',
-                        position: 'bottom'
-                    });
-                } else {
-                    this.$toast.open({
-                        type: 'warning',
-                        message: 'لم يتم حذف المنتج',
-                        position: 'bottom'
-                    });
-                }
-
-                let inner = document.querySelectorAll('.cart--list--item--inner');
-                let remove = document.querySelectorAll('.cart--list--item--delete');
-
-                inner.forEach(item => {
-                    item.style.transform = 'translateX(0)';
-                });
-
-                remove.forEach(item => {
-                    item.style.opacity = 0;
-                });
-            }).catch(err => {
-                console.error(err)
-            })
-        },
-
-        addItem(product, index) {
-            Modals.confirm({
-                title: 'حفظ المنتج في السلة',
-                message: 'سوف يتم نقل المنتج الى السلة هل انت موافق ؟'
-            }).then(data => {
-                if(data.value === true) {
-                    this.$store.dispatch('save_product', {product: product, qty: 1})
-                    .then(result => {
-                        this.removeItem(index);
-                    })
-                    .catch(err => {
-                        console.log(err)
-                    })
-                } else {
-                    console.log(data.value)
-                }
-            })
-        },
-
         onSwipe(e, i) {
-            let inner = document.querySelectorAll('.cart--list--item--inner');
-            let remove = document.querySelectorAll('.cart--list--item--delete');
+            let inner = document.querySelectorAll('.favorite--list--item--inner');
+            let remove = document.querySelectorAll('.favorite--list--item--delete');
 
             inner.forEach(item => {
                 item.style.transform = 'translateX(0)';
@@ -141,18 +80,77 @@ export default {
                 remove[i].style.opacity = 1;
             }
 
+        },
+        removeItem(index) {
+            let confirm = Modals.confirm({
+                title: 'حذف المنتج',
+                message: 'هل تريد حف المنتج ؟'
+            }).then(data => {
+                if (data.value === true) {
+                    this.$store.dispatch('remove_from_favorite', index);
+                    this.$toast.open({
+                        type: 'success',
+                        message: 'تم حذف المنتج',
+                        position: 'bottom'
+                    });
+                } else {
+                    this.$toast.open({
+                        type: 'warning',
+                        message: 'لم يتم حذف المنتج',
+                        position: 'bottom'
+                    });
+                }
+
+                let inner = document.querySelectorAll('.favorite--list--item--inner');
+                let remove = document.querySelectorAll('.favorite--list--item--delete');
+
+                inner.forEach(item => {
+                    item.style.transform = 'translateX(0)';
+                });
+
+                remove.forEach(item => {
+                    item.style.opacity = 0;
+                });
+            }).catch(err => {
+                console.error(err)
+            })
+        },
+
+        save_product(product, index) {
+            this.$store.dispatch('save_product', {
+                    product: product,
+                    qty: 1
+                })
+                .then(data => {
+                    this.$toast.open({
+                        type: 'success',
+                        message: 'تم اضافة المنتج الى السلة',
+                        position: 'bottom'
+                    });
+                    setTimeout(() => {
+                        this.$store.dispatch('remove_from_favorite', index);
+                        this.$toast.open({
+                            type: 'success',
+                            message: 'تم حذف المنتج من المفضلة',
+                            position: 'bottom'
+                        });
+                    }, 1200)
+                }).catch(err => {
+                    console.error(err)
+                });
         }
     },
+
 }
 </script>
 
 <style lang="scss">
 @import '../variables.scss';
-
 $trans: cubic-bezier(0.075, 0.82, 0.165, 1) 300ms all;
 
 .page--favorite {
     height: calc(100vh - 90px);
+    width: 100%;
 
     .page--content {
         height: 100%;
@@ -201,18 +199,10 @@ $trans: cubic-bezier(0.075, 0.82, 0.165, 1) 300ms all;
     }
 }
 
-.cart {
+.favorite {
     display: block;
     padding: 10px;
-
-    &--head {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 10px 10px;
-        border-bottom: 1px solid rgba($primary, .10);
-        margin-bottom: 10px;
-    }
+    margin-bottom: 90px;
 
     &--list {
         display: block;
@@ -329,7 +319,16 @@ $trans: cubic-bezier(0.075, 0.82, 0.165, 1) 300ms all;
 
                     &.add-button {
                         background: $primary;
-                        
+
+                        i {
+                            color: $secondary;
+                        }
+                    }
+
+                    &:nth-child(2) {
+                        background: $primary;
+                        color: $secondary;
+
                         i {
                             color: $secondary;
                         }

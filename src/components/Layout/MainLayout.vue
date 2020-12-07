@@ -3,13 +3,15 @@
     <div class="page--toolbar" v-show="toolbar">
         <div class="page--toolbar--inner">
             <button class="search-button" v-show="search" @click="$store.commit('TOGGLE_SEARCH')">
-                <i class="im im-magnifier"></i>
+                <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd">
+                    <path d="M15.853 16.56c-1.683 1.517-3.911 2.44-6.353 2.44-5.243 0-9.5-4.257-9.5-9.5s4.257-9.5 9.5-9.5 9.5 4.257 9.5 9.5c0 2.442-.923 4.67-2.44 6.353l7.44 7.44-.707.707-7.44-7.44zm-6.353-15.56c4.691 0 8.5 3.809 8.5 8.5s-3.809 8.5-8.5 8.5-8.5-3.809-8.5-8.5 3.809-8.5 8.5-8.5z" /></svg>
             </button>
 
             <span>{{ title }}</span>
-            
+
             <button class="backbutton" v-show="backbutton" @click="$router.go(-1)">
-                <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M2.117 12l7.527 6.235-.644.765-9-7.521 9-7.479.645.764-7.529 6.236h21.884v1h-21.883z"/></svg>
+                <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd">
+                    <path d="M2.117 12l7.527 6.235-.644.765-9-7.521 9-7.479.645.764-7.529 6.236h21.884v1h-21.883z" /></svg>
             </button>
         </div>
     </div>
@@ -28,7 +30,7 @@
             </li>
 
             <li class="page--navigation--list--item fab--right">
-                <router-link to="/profile" tag="button" exact exact-active-class="active">
+                <router-link to="/profile/1" tag="button" exact exact-active-class="active">
                     <i class="im im-user-male"></i>
                 </router-link>
             </li>
@@ -86,7 +88,7 @@ export default {
             type: Boolean,
             default: false
         },
-        
+
         search: {
             type: Boolean,
             default: true
@@ -119,7 +121,7 @@ export default {
         padding: 15px 12px;
         background: $primary;
         z-index: 400;
-
+        
         &--inner {
             display: block;
             width: 100%;
@@ -162,8 +164,9 @@ export default {
                 color: $secondary;
                 transform: translateY(-50%);
 
-                i {
-                    font-size: 20px;
+                svg {
+                    display: block;
+                    fill: $secondary;
                 }
             }
         }
